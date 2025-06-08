@@ -4,6 +4,15 @@
 
 isobar is a Python library for creating and manipulating musical patterns, designed for use in algorithmic composition, generative music and sonification. It makes it quick and easy to express complex musical ideas, and can send and receive events from various different sources including MIDI, MIDI files, and OSC.
 
+## AI Assistant Configuration
+
+This project includes AI assistant configuration for enhanced development experience:
+- **Claude Code**: Deep code analysis and context (`/user:context` for updates)
+- **Cursor**: Real-time coding guidance (`.cursor/rules/`)
+- **GitHub Copilot**: Inline suggestions (`.github/copilot-instructions.md`)
+
+See [AI_SETUP.md](AI_SETUP.md) for setup instructions and `.github/copilot-instructions-guide.md` for details.
+
 The core element is a Timeline, which can control its own tempo or sync to an external clock. Onto this, you can schedule Patterns, which can be note sequences, control events, program changes, or other arbitrary events via lambda functions. Pattern are used as templates to generate Events, which trigger notes or control changes on an OutputDevice (Check out a [diagrammatic overview](http://ideoforms.github.io/isobar/#flow-diagram).)
 
 isobar includes a large array of basic compositional building blocks (see [Pattern Classes](#pattern-classes)), plus some advanced pattern generators for more sophisticated operations (arpeggiators, Euclidean rhythms, L-systems, Markov chains).
