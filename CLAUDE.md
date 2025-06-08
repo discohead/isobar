@@ -69,3 +69,42 @@ auxiliary/scripts/generate-docs.py -m > docs/patterns/library.md
 - Real-time support through background threads
 - Global state management in `globals/` for inter-process sync
 - Shorthand notation system in `shorthand/` for quick pattern creation
+
+## Key Design Patterns
+
+### Pattern Class Structure
+All patterns follow this structure:
+```python
+class PPatternName(Pattern):
+    abbreviation = "pname"  # For shorthand notation
+    
+    def __init__(self, ...):
+        # Validate inputs
+        # Store parameters
+        self.reset()
+    
+    def __next__(self):
+        # Return next value or raise StopIteration
+    
+    def reset(self):
+        super().reset()
+        # Reset internal state
+```
+
+### Common Naming Conventions
+- Pattern classes: `P` prefix (e.g., `PSequence`, `PRandom`)
+- Test methods: `test_` prefix
+- Private methods: `_` prefix
+- Constants: `UPPER_SNAKE_CASE`
+- Regular methods/variables: `snake_case`
+
+### Error Handling
+- Use custom exceptions from `exceptions.py`
+- Timeline supports `ignore_exceptions=True` for live coding
+- Validate MIDI values (0-127) before output
+
+### Testing Approach
+- Use pytest with fixtures
+- Test pattern output with `.all()` method
+- Verify operator overloading behavior
+- Check edge cases (empty sequences, invalid values)
