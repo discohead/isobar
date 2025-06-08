@@ -7,11 +7,14 @@ isobar is a Python library for creating and manipulating musical patterns, desig
 ## AI Assistant Configuration
 
 This project includes AI assistant configuration for enhanced development experience:
+
 - **Claude Code**: Deep code analysis and context (`/user:context` for updates)
 - **Cursor**: Real-time coding guidance (`.cursor/rules/`)
 - **GitHub Copilot**: Inline suggestions (`.github/copilot-instructions.md`)
 
 See [AI_SETUP.md](AI_SETUP.md) for setup instructions and `.github/copilot-instructions-guide.md` for details.
+
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/discohead/isobar)
 
 The core element is a Timeline, which can control its own tempo or sync to an external clock. Onto this, you can schedule Patterns, which can be note sequences, control events, program changes, or other arbitrary events via lambda functions. Pattern are used as templates to generate Events, which trigger notes or control changes on an OutputDevice (Check out a [diagrammatic overview](http://ideoforms.github.io/isobar/#flow-diagram).)
 
@@ -75,27 +78,27 @@ For complete documentation, see [ideoforms.github.io/isobar](http://ideoforms.gi
 Examples are available in the [examples](examples) directory with this
 distribution:
 
-* [00.ex-hello-world.py](examples/00.ex-hello-world.py)
-* [01.ex-basics.py](examples/01.ex-basics.py)
-* [02.ex-subsequence.py](examples/02.ex-subsequence.py)
-* [03.ex-euclidean.py](examples/03.ex-euclidean.py)
-* [04.ex-permutations.py](examples/04.ex-permutations.py)
-* [05.ex-piano-phase.py](examples/05.ex-piano-phase.py)
-* [06.ex-walk.py](examples/06.ex-walk.py)
-* [07.ex-static-pattern.py](examples/07.ex-static-pattern.py)
-* [10.ex-lsystem-stochastic.py](examples/10.ex-lsystem-stochastic.py)
-* [11.ex-lsystem-rhythm.py](examples/11.ex-lsystem-rhythm.py)
-* [12.ex-lsystem-grapher.py](examples/12.ex-lsystem-grapher.py)
-* [20.ex-midi-input.py](examples/20.ex-midi-input.py)
-* [21.ex-midi-clock-sync-in.py](examples/21.ex-midi-clock-sync-in.py)
-* [22.ex-midi-markov-learner.py](examples/22.ex-midi-markov-learner.py)
-* [23.ex-midi-monitor.py](examples/23.ex-midi-monitor.py)
-* [24.ex-link-clock.py](examples/24.ex-link-clock.py)
-* [25.ex-fluid-synth.py](examples/25.ex-fluid-synth.py)
-* [30.ex-midifile-read.py](examples/30.ex-midifile-read.py)
-* [31.ex-midifile-write.py](examples/31.ex-midifile-write.py)
-* [32.ex-midifile-markov.py](examples/32.ex-midifile-markov.py)
-* [40.ex-osc-send.py](examples/40.ex-osc-send.py)
+- [00.ex-hello-world.py](examples/00.ex-hello-world.py)
+- [01.ex-basics.py](examples/01.ex-basics.py)
+- [02.ex-subsequence.py](examples/02.ex-subsequence.py)
+- [03.ex-euclidean.py](examples/03.ex-euclidean.py)
+- [04.ex-permutations.py](examples/04.ex-permutations.py)
+- [05.ex-piano-phase.py](examples/05.ex-piano-phase.py)
+- [06.ex-walk.py](examples/06.ex-walk.py)
+- [07.ex-static-pattern.py](examples/07.ex-static-pattern.py)
+- [10.ex-lsystem-stochastic.py](examples/10.ex-lsystem-stochastic.py)
+- [11.ex-lsystem-rhythm.py](examples/11.ex-lsystem-rhythm.py)
+- [12.ex-lsystem-grapher.py](examples/12.ex-lsystem-grapher.py)
+- [20.ex-midi-input.py](examples/20.ex-midi-input.py)
+- [21.ex-midi-clock-sync-in.py](examples/21.ex-midi-clock-sync-in.py)
+- [22.ex-midi-markov-learner.py](examples/22.ex-midi-markov-learner.py)
+- [23.ex-midi-monitor.py](examples/23.ex-midi-monitor.py)
+- [24.ex-link-clock.py](examples/24.ex-link-clock.py)
+- [25.ex-fluid-synth.py](examples/25.ex-fluid-synth.py)
+- [30.ex-midifile-read.py](examples/30.ex-midifile-read.py)
+- [31.ex-midifile-write.py](examples/31.ex-midifile-write.py)
+- [32.ex-midifile-markov.py](examples/32.ex-midifile-markov.py)
+- [40.ex-osc-send.py](examples/40.ex-osc-send.py)
 
 ### Pattern classes
 
@@ -217,4 +220,3 @@ Thanks to the following contributors:
 isobar was first designed for the generative sound installation [Variable 4](http://www.variable4.org.uk), in which it was used to generate musical structures in response to changing weather conditions. It was more recently used in [The Listening Machine](http://www.thelisteningmachine.org/), taking live input from Twitter and generating musical output from language patterns, streamed live over the internet.
 
 Many of the concepts behind Pattern and its subclasses are inspired by the brilliant pattern library of the [SuperCollider](http://supercollider.sf.net) synthesis language.
-
