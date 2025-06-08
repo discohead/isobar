@@ -1,0 +1,67 @@
+# Output Device Rules
+
+**Glob**: `isobar/io/**/*.py`
+
+## Device Implementation
+Every output device MUST:
+
+```python
+class NewOutputDevice(OutputDevice):
+    def __init__(self, connection_params):
+        super().__init__()
+        # Initialize connection
+        # Set device-specific timing if needed
+        log.info(f"Initialized {self.__class__.__name__}")
+    
+    def note_on(self, note=60, velocity=64, channel=0):
+        # Validate inputs (0-127, 0-15)
+        # Convert to device protocol
+        # Send message
+        log.debug(f"Note on: {note} vel={velocity} ch={channel}")
+    
+    def note_off(self, note=60, channel=0):
+        # Implementation
+        
+    def control(self, control=0, value=0, channel=0):
+        # Implementation
+        
+    def program_change(self, program=0, channel=0):
+        # Implementation
+```
+
+## Required Methods
+- `note_on()` - Start a note
+- `note_off()` - Stop a note
+- `control()` - Send CC message
+- `program_change()` - Change instrument
+- `all_notes_off()` - Panic button
+
+## Optional Methods
+- `tick()` - Clock sync pulse
+- `start()` - Timeline started
+- `stop()` - Timeline stopped
+- `@property ticks_per_beat` - Device timing
+
+## Connection Handling
+```python
+def _connect(self):
+    try:
+        self.connection = establish_connection()
+        log.info(f"Connected to {self.target}")
+    except Exception as e:
+        log.error(f"Connection failed: {e}")
+        raise
+
+def __del__(self):
+    if hasattr(self, 'connection'):
+        try:
+            self.connection.close()
+        except:
+            pass
+```
+
+## MIDI-Specific Rules
+- Use `mido` library for MIDI
+- Default to first available output
+- Support device name selection
+- Handle hot-plugging gracefully

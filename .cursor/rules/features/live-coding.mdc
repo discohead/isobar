@@ -1,0 +1,104 @@
+# Live Coding Rules
+
+**Glob**: `examples/*.py`, `**/*live*.py`
+
+## Timeline Setup for Live Coding
+Always use these settings:
+```python
+# Stable timeline for live performance
+timeline = Timeline(
+    tempo=120,
+    ignore_exceptions=True,  # REQUIRED - Don't crash on errors
+    start=True              # Start immediately
+)
+```
+
+## Track Management
+Keep references to tracks:
+```python
+# Good - can manipulate later
+bass_track = timeline.schedule({...})
+drum_track = timeline.schedule({...})
+
+# Bad - no way to stop/modify
+timeline.schedule({...})
+```
+
+## Pattern Hot-Swapping
+```python
+# Update running track
+if track and track.playing:
+    track.update({
+        "note": new_pattern,
+        "velocity": new_velocity_pattern
+    })
+```
+
+## Error Recovery
+```python
+def safe_schedule(timeline, event_dict):
+    """Schedule with error handling."""
+    try:
+        return timeline.schedule(event_dict)
+    except Exception as e:
+        print(f"Schedule failed: {e}")
+        return None
+
+# Use wrapper
+track = safe_schedule(timeline, {
+    "note": risky_pattern,
+    "duration": 0.5
+})
+```
+
+## Section Management
+```python
+# Create reusable sections
+def intro():
+    timeline.stop_all_tracks()
+    return timeline.schedule({
+        "note": PSequence([36, 36, 41, 43]),
+        "duration": 1
+    })
+
+def verse():
+    timeline.stop_all_tracks()
+    drums = timeline.schedule({...})
+    bass = timeline.schedule({...})
+    return drums, bass
+
+def chorus():
+    # Fuller arrangement
+    pass
+```
+
+## Live Pattern Development
+```python
+# Start simple
+pattern = PSequence([60, 64, 67])
+
+# Evolve gradually
+pattern = PSequence([60, 64, 67]) + PBrown(0, 12, 2)
+pattern = PChoice([60, 64, 67, 72]) + PBrown(0, 24, 3)
+
+# Update live
+track.update({"note": pattern})
+```
+
+## Performance Controls
+```python
+# Global controls
+timeline.tempo = 140  # Change tempo
+
+# Mute groups
+def mute_percussion():
+    for track in percussion_tracks:
+        track.stop()
+
+# Parameter automation
+timeline.schedule({
+    "control": 7,  # Volume
+    "value": PLinear(0, 127, 32),  # Fade in
+    "channel": 0
+})
+```

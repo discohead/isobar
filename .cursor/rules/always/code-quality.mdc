@@ -1,0 +1,65 @@
+# Code Quality Standards
+
+## Documentation
+Every public class/method needs docstring:
+```python
+def method(self, param: type) -> return_type:
+    """
+    Brief description.
+    
+    Args:
+        param: Parameter description
+        
+    Returns:
+        Return value description
+    """
+```
+
+## Type Hints
+Use type hints for all public methods:
+```python
+from typing import Optional, Union, List, Any
+
+def __init__(self, 
+             tempo: float = 120,
+             output_device: Optional[OutputDevice] = None):
+```
+
+## Testing Requirements
+For every pattern/feature:
+1. Basic functionality test
+2. Reset behavior test  
+3. Operator overloading test
+4. Edge case handling test
+
+Test structure:
+```python
+def test_pattern_basic():
+    p = iso.PPattern(args)
+    assert next(p) == expected
+    assert p.all(4) == [1, 2, 3, 4]
+```
+
+## Logging Standards
+```python
+import logging
+log = logging.getLogger(__name__)
+
+# Use appropriate levels
+log.debug(f"Processing event: {event}")
+log.info(f"Connected to {device}")
+log.warning(f"Pattern may be infinite")
+log.error(f"Failed to connect: {e}")
+```
+
+## Performance Considerations
+- Use iterators, not lists
+- Lazy evaluation by default
+- Cache expensive calculations
+- Profile before optimizing
+
+## Code Style
+- Line length: 120 characters
+- Use f-strings for formatting
+- Meaningful variable names
+- No single-letter variables except in loops

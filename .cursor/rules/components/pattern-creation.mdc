@@ -1,0 +1,80 @@
+# Pattern Creation Rules
+
+**Glob**: `isobar/pattern/*.py`
+
+## Pattern Class Template
+When creating a new pattern, use this exact structure:
+
+```python
+from __future__ import annotations
+from typing import Any
+from .core import Pattern
+
+class PNewPattern(Pattern):
+    """One-line description.
+    
+    Detailed explanation.
+    
+    Examples:
+        >>> p = PNewPattern(param)
+        >>> p.nextn(8)
+        [1, 2, 3, 4, 5, 6, 7, 8]
+    """
+    
+    abbreviation = "pnew"
+    
+    def __init__(self, param1: Any, param2: Any = None):
+        self.param1 = param1
+        self.param2 = param2
+        
+        # Validate inputs
+        if invalid_condition:
+            raise ValueError("Clear error message")
+            
+        self.reset()
+    
+    def __repr__(self):
+        return f"PNewPattern({self.param1!r}, {self.param2!r})"
+    
+    def reset(self):
+        super().reset()
+        # Initialize/reset state
+        self.index = 0
+    
+    def __next__(self):
+        # Handle pattern parameters
+        param1 = Pattern.value(self.param1)
+        
+        # Pattern logic
+        if stop_condition:
+            raise StopIteration
+            
+        value = computed_value
+        self.index += 1
+        
+        return value
+```
+
+## Common Pattern Types
+
+### Sequence Patterns
+- Iterate through lists/arrays
+- Support repeats parameter
+- Handle empty sequences gracefully
+
+### Stochastic Patterns  
+- Use random module
+- Support seed for reproducibility
+- Document probability distributions
+
+### Generator Patterns
+- Mathematical sequences
+- Oscillators and LFOs
+- Time-based patterns
+
+## Anti-Patterns to Avoid
+❌ Don't store Timeline references
+❌ Don't handle timing/scheduling
+❌ Don't communicate between patterns
+❌ Don't use print() - use logging
+❌ Don't forget reset() method

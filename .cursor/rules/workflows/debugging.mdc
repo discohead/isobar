@@ -1,0 +1,118 @@
+# Debugging Workflow
+
+**Glob**: `**/*.py`
+
+## Pattern Debugging
+
+### Inspect Pattern Output
+```python
+# Quick inspection
+print(pattern.all(16))  # First 16 values
+
+# Detailed inspection
+pattern.reset()
+for i in range(10):
+    try:
+        value = next(pattern)
+        print(f"{i}: {value}")
+    except StopIteration:
+        print(f"Pattern stopped at index {i}")
+        break
+```
+
+### Validate MIDI Values
+```python
+def validate_pattern(pattern, length=32):
+    """Check pattern produces valid MIDI."""
+    try:
+        values = pattern.all(length)
+        
+        # Check range
+        invalid = [v for v in values if not 0 <= v <= 127]
+        if invalid:
+            print(f"Invalid MIDI values: {invalid}")
+            return False
+            
+        # Check type
+        non_numeric = [v for v in values if not isinstance(v, (int, float))]
+        if non_numeric:
+            print(f"Non-numeric values: {non_numeric}")
+            return False
+            
+        return True
+    except Exception as e:
+        print(f"Pattern error: {e}")
+        return False
+```
+
+## Timeline Debugging
+
+### Enable Logging
+```python
+import logging
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='[%(asctime)s] %(name)s - %(message)s'
+)
+```
+
+### Monitor Timeline State
+```python
+print(f"Running: {timeline.running}")
+print(f"Tempo: {timeline.tempo}")
+print(f"Current time: {timeline.current_time}")
+print(f"Active tracks: {len([t for t in timeline.tracks if t.playing])}")
+```
+
+### Debug Output Device
+```python
+class DebugOutput(OutputDevice):
+    def note_on(self, note, velocity, channel):
+        print(f"🎹 NOTE ON: {note} vel={velocity} ch={channel}")
+    
+    def note_off(self, note, channel):
+        print(f"🎹 NOTE OFF: {note} ch={channel}")
+
+# Use for testing
+timeline = Timeline(output_device=DebugOutput())
+```
+
+## Common Issues
+
+### Pattern Not Playing
+```python
+# Check 1: Pattern produces values
+print(pattern.all(10))  # Should see values
+
+# Check 2: Track is scheduled
+track = timeline.schedule({...})
+print(f"Track playing: {track.playing}")
+
+# Check 3: Output device connected
+print(f"Output devices: {timeline.output_devices}")
+```
+
+### Timing Problems
+```python
+# Monitor actual vs expected tempo
+import time
+start_time = time.time()
+start_beats = timeline.current_time
+
+time.sleep(10)
+
+elapsed_time = time.time() - start_time
+elapsed_beats = timeline.current_time - start_beats
+actual_bpm = (elapsed_beats / elapsed_time) * 60
+
+print(f"Expected BPM: {timeline.tempo}")
+print(f"Actual BPM: {actual_bpm:.1f}")
+```
+
+### Memory Issues
+```python
+# Check for infinite patterns
+pattern = YourPattern()
+if len(list(itertools.islice(pattern, 10000))) == 10000:
+    print("⚠️  Pattern might be infinite!")
+```

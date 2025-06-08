@@ -1,0 +1,56 @@
+# Architecture Principles
+
+## Event Flow
+Timeline → Track → Pattern → Event → OutputDevice
+
+Never bypass this flow or create direct connections.
+
+## Pattern Independence
+Patterns MUST NOT:
+- Know about Timeline or Track
+- Handle timing or scheduling
+- Communicate with output devices
+- Maintain global state
+
+Patterns MUST:
+- Be pure iterators
+- Support lazy evaluation
+- Be composable via operators
+- Reset cleanly
+
+## Output Device Interface
+All output devices implement:
+```python
+def note_on(self, note=60, velocity=64, channel=0): pass
+def note_off(self, note=60, channel=0): pass  
+def control(self, control=0, value=0, channel=0): pass
+def program_change(self, program=0, channel=0): pass
+```
+
+## MIDI Value Validation
+Always validate MIDI ranges:
+```python
+note = int(note) % 128      # 0-127
+velocity = int(velocity) % 128
+channel = int(channel) % 16  # 0-15
+```
+
+## Timing Resolution
+- Default: 480 PPQN (ticks per quarter note)
+- Never hardcode timing values
+- Use `timeline.ticks_per_beat`
+
+## Thread Safety
+- Timeline runs in background thread
+- Use event queues between threads
+- Avoid shared mutable state
+- Log operations at debug level
+
+## Error Handling
+```python
+# For production (live coding)
+timeline = Timeline(ignore_exceptions=True)
+
+# For development
+timeline = Timeline(ignore_exceptions=False)
+```

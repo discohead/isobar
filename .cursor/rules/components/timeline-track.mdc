@@ -1,0 +1,102 @@
+# Timeline and Track Rules
+
+**Glob**: `isobar/timelines/*.py`
+
+## Timeline Creation
+Standard timeline initialization:
+```python
+timeline = Timeline(
+    tempo=120,                      # BPM
+    output_device=None,             # Auto-detect MIDI
+    clock_source=None,              # Internal clock
+    ticks_per_beat=480,            # Resolution
+    ignore_exceptions=False,        # Strict mode
+    start=False                     # Manual start
+)
+```
+
+## Track Scheduling
+Use dict notation for events:
+```python
+track = timeline.schedule({
+    "note": Pattern or value,
+    "duration": Pattern or value,
+    "velocity": Pattern or value,
+    "channel": 0-15,
+    "gate": Pattern (0 or 1),
+    "delay": Pattern (in beats)
+})
+```
+
+## Event Types
+### Note Events
+```python
+{
+    "note": 60,           # Required
+    "duration": 1,        # Required
+    "velocity": 64,       # Optional (default 64)
+    "channel": 0,         # Optional (default 0)
+}
+```
+
+### Control Events
+```python
+{
+    "control": 7,         # CC number
+    "value": 100,         # CC value
+    "channel": 0
+}
+```
+
+### Action Events
+```python
+{
+    "action": lambda: print("Beat!"),
+    "duration": 1
+}
+```
+
+## Clock Sources
+```python
+# Internal (default)
+clock_source = None
+
+# MIDI sync
+clock_source = "midi"
+clock_source = MidiInputDevice()
+
+# Ableton Link
+clock_source = "link"
+clock_source = AbletonLinkClock()
+```
+
+## Track Control
+```python
+# Stop/start
+track.stop()
+track.start()
+
+# Update parameters
+track.update({"velocity": 80})
+
+# Check state
+if track.playing:
+    print("Track is active")
+```
+
+## Common Patterns
+```python
+# Drums with Euclidean rhythms
+timeline.schedule({
+    "note": 36,
+    "duration": 0.25,
+    "gate": PBjorklund(5, 16),
+    "velocity": PGaussian(80, 10)
+})
+
+# Chord progression
+timeline.schedule({
+    "note": PSequence([[60,64,67], [65,69,72]]),
+    "duration": 2
+})
+```

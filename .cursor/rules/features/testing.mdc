@@ -1,0 +1,89 @@
+# Testing Rules
+
+**Glob**: `tests/*.py`
+
+## Test Structure
+Use pytest conventions:
+```python
+import pytest
+import isobar as iso
+
+class TestPatternName:
+    def test_basic_functionality(self):
+        """Test core behavior."""
+        p = iso.PPattern(args)
+        assert next(p) == expected
+        
+    def test_reset(self):
+        """Test reset behavior."""
+        p = iso.PPattern(args)
+        next(p)
+        p.reset()
+        assert next(p) == first_value
+        
+    def test_operators(self):
+        """Test arithmetic operators."""
+        p1 = iso.PPattern(args)
+        p2 = p1 + 10
+        assert next(p2) == expected + 10
+        
+    def test_edge_cases(self):
+        """Test error conditions."""
+        with pytest.raises(ValueError):
+            iso.PPattern(invalid_args)
+```
+
+## Pattern Testing
+Always test:
+1. First few values with `next()`
+2. Full sequence with `.all()`
+3. Reset behavior
+4. StopIteration for finite patterns
+5. Operator overloading
+6. Edge cases (empty, invalid input)
+
+## Mock External Resources
+```python
+from unittest.mock import Mock, patch
+
+@pytest.fixture
+def mock_midi():
+    with patch('mido.open_output') as mock:
+        yield mock
+
+def test_midi_output(mock_midi):
+    device = iso.MidiOutputDevice()
+    device.note_on(60, 100)
+    mock_midi.return_value.send.assert_called()
+```
+
+## Performance Tests
+```python
+def test_pattern_performance():
+    """Ensure pattern is efficient."""
+    p = iso.PLargePattern()
+    
+    import time
+    start = time.time()
+    values = p.all(10000)
+    elapsed = time.time() - start
+    
+    assert elapsed < 1.0  # Should be fast
+```
+
+## Integration Tests
+```python
+def test_timeline_integration():
+    """Test with full timeline."""
+    timeline = iso.Timeline(tempo=480)  # Fast for testing
+    
+    values = []
+    timeline.schedule({
+        "note": iso.PSequence([60, 64, 67]),
+        "duration": 0.1,
+        "action": lambda: values.append(1)
+    })
+    
+    timeline.run(duration=1)
+    assert len(values) == 3
+```

@@ -1,0 +1,98 @@
+# Pattern Composition Workflow
+
+**Glob**: `**/*.py`
+
+## Building Complex Patterns
+
+### 1. Start with Basic Elements
+```python
+# Atomic patterns
+root = PSequence([0, 0, 5, 7])
+rhythm = PBjorklund(5, 8)
+velocity = PGaussian(64, 10)
+```
+
+### 2. Transform and Combine
+```python
+# Melodic transformation
+melody = root + PChoice([0, 12, 24])  # Add octaves
+melody = melody + Scale.minor  # Apply scale
+
+# Rhythmic gating
+notes = PConcat([melody, PSilence(4)])  # Add rests
+final = PMask(notes, rhythm)  # Apply rhythm
+```
+
+### 3. Add Variation
+```python
+# Probability-based variation
+varied = PSwitch(
+    PSequence([60, 64, 67]),  # Original
+    PChoice([60, 64, 67, 72]) + PBrown(0, 12),  # Variation
+    probability=0.3  # 30% chance of variation
+)
+```
+
+## Pattern Arithmetic
+
+### Addition/Transposition
+```python
+# Transpose up octave
+pattern + 12
+
+# Harmonize in thirds
+pattern + [0, 4]  # Parallel thirds
+
+# Random transposition
+pattern + PChoice([-12, 0, 12])
+```
+
+### Multiplication/Scaling
+```python
+# Double all values
+pattern * 2
+
+# Velocity scaling
+velocity * PLinear(1.0, 0.5, 32)  # Fade out
+```
+
+### Advanced Operations
+```python
+# Modulo for wrapping
+(pattern * 1.5) % 12  # Keep within octave
+
+# Power for exponential curves
+PLinear(0, 1, 16) ** 2  # Exponential fade
+```
+
+## Structural Patterns
+
+### Song Sections
+```python
+# Define sections
+intro = PSequence([...], repeats=4)
+verse = PSequence([...], repeats=8)
+chorus = PSequence([...], repeats=8)
+
+# Combine
+song = PConcat([intro, verse, chorus, verse, chorus])
+```
+
+### Call and Response
+```python
+call = PSequence([67, 69, 67, 65])
+response = PChoice([60, 62, 64]) + PRandom(0, 12)
+
+phrase = PConcat([call, response])
+```
+
+### Development
+```python
+# Theme and variations
+theme = PSequence([0, 2, 5, 7])
+var1 = theme + PSequence([0, 1, 2, 3])  # Rising
+var2 = theme * PSequence([1, 0.5, 2, 1])  # Rhythmic
+var3 = 12 - theme  # Inversion
+
+composition = PConcat([theme, var1, var2, var3])
+```
