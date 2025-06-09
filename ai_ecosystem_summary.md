@@ -2,7 +2,7 @@
 
 ## What Was Created
 
-A comprehensive three-part AI assistant system for the isobar codebase:
+A comprehensive four-part AI assistant system for the isobar codebase:
 
 ### 1. Claude Code Context Architecture
 **Location**: `claude/`, `.claude/`, enhanced `CLAUDE.md`
@@ -37,6 +37,17 @@ A comprehensive three-part AI assistant system for the isobar codebase:
 - Specialized guides for code/test generation
 - Reusable prompt templates
 
+### 4. OpenAI Codex AGENTS.md Files
+**Location**: `AGENTS.md` files throughout the codebase (nested structure)
+
+**Purpose**: Task execution and automation in cloud environments
+
+**Contains**:
+- Practical development commands and validation steps
+- Cross-references to CLAUDE.md, Cursor rules, and Copilot instructions
+- Step-by-step procedures for common tasks
+- Debugging and testing workflows
+
 ## How They Work Together
 
 ```
@@ -48,18 +59,22 @@ User Question/Task
         ↓
    Copilot (Quick Suggestions)
         ↓
-   Idiomatic Code
+   Codex (Task Automation)
+        ↓
+   Idiomatic Code + PRs
 ```
 
 ### Progressive Enhancement
 - **Level 1**: Copilot provides basic suggestions
 - **Level 2**: Cursor enforces conventions and architecture
 - **Level 3**: Claude Code offers deep context and problem solving
+- **Level 4**: Codex executes complex tasks and generates PRs
 
 ### Complementary Strengths
 - **Copilot**: Fast, inline, pattern-based
 - **Cursor**: Contextual, rule-based, architectural
 - **Claude Code**: Comprehensive, explanatory, workflow-oriented
+- **Codex**: Task automation, PR generation, cloud execution
 
 ## Key Patterns Captured
 
@@ -91,6 +106,11 @@ User Question/Task
 - `AI_SETUP.md` - Complete setup guide
 - `CONTRIBUTING.md` - Enhanced with AI guidance
 - `team_onboarding.md` - New developer guide
+
+### AGENTS.md Files
+- `isobar/AGENTS.md` - Root task execution guide
+- `isobar/*/AGENTS.md` - Module-specific development tasks
+- Cross-references to existing AI ecosystem components
 
 ### Maintenance
 - `.github/maintenance_schedule.md` - Regular maintenance tasks
@@ -128,6 +148,7 @@ User Question/Task
 - `/user:context-update` - Refresh Claude context
 - `/user:rules-sync` - Update Cursor rules
 - `/user:instructions-optimize` - Optimize Copilot
+- Update AGENTS.md files when adding new modules/patterns
 
 ## Success Metrics
 
@@ -144,9 +165,10 @@ User Question/Task
 - ✅ Onboarding time reduced
 
 ### System Integration
-- ✅ All three systems reference same patterns
+- ✅ All four systems reference same patterns
 - ✅ Size constraints respected
 - ✅ Real-world usage validated
+- ✅ Cross-system references working
 
 ## Future Enhancements
 

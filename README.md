@@ -6,13 +6,14 @@ isobar is a Python library for creating and manipulating musical patterns, desig
 
 ## AI Assistant Configuration
 
-This project includes AI assistant configuration for enhanced development experience:
+This project includes a comprehensive four-part AI assistant configuration for enhanced development experience:
 
-- **Claude Code**: Deep code analysis and context (`/user:context` for updates)
+- **Claude Code**: Deep code analysis and context (`CLAUDE.md` files, `/user:context` for updates)
 - **Cursor**: Real-time coding guidance (`.cursor/rules/`)
 - **GitHub Copilot**: Inline suggestions (`.github/copilot-instructions.md`)
+- **OpenAI Codex**: Cloud-based task automation (`AGENTS.md` files)
 
-See [AI_SETUP.md](AI_SETUP.md) for setup instructions and `.github/copilot-instructions-guide.md` for details.
+See [AI_SETUP.md](AI_SETUP.md) for setup instructions and [ai_ecosystem_summary.md](ai_ecosystem_summary.md) for overview.
 
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/discohead/isobar)
 

@@ -4,11 +4,12 @@ This guide helps you set up and use the AI assistant configuration for the isoba
 
 ## Overview
 
-The isobar project includes a comprehensive three-part AI assistant system:
+The isobar project includes a comprehensive four-part AI assistant system:
 
 1. **Claude Code** - Deep knowledge repository and context architecture
 2. **Cursor** - Active behavioral rules during coding
 3. **GitHub Copilot** - Persistent inline suggestions
+4. **OpenAI Codex** - Cloud-based task automation and PR generation
 
 Each component serves a specific purpose and they work together to enhance your development experience.
 
@@ -17,6 +18,7 @@ Each component serves a specific purpose and they work together to enhance your 
 - [ ] Claude Code installed (claude.ai/code)
 - [ ] Cursor IDE installed (optional but recommended)
 - [ ] GitHub Copilot extension installed (for VS Code or your IDE)
+- [ ] OpenAI Codex access (chatgpt.com/codex)
 
 ## Quick Start
 
@@ -43,12 +45,20 @@ Instructions in `.github/copilot-instructions.md` help with:
 - Test generation
 - Common isobar idioms
 
+### 4. OpenAI Codex
+AGENTS.md files throughout the codebase provide:
+- Executable development commands
+- Step-by-step task procedures
+- Cross-references to other AI systems
+- Debugging and validation workflows
+
 ## Development Workflows
 
 ### Creating a New Pattern
 1. **Start with Copilot** - Get the basic structure
 2. **Follow Cursor rules** - Ensure conventions are met
 3. **Reference Claude Code** - See examples and patterns
+4. **Use Codex for automation** - Generate tests and documentation
 
 Example:
 ```python
@@ -101,6 +111,11 @@ claude/
 ├── copilot-instructions.md      # Main Copilot file
 ├── instructions/                 # Specialized guides
 └── prompts/                     # Prompt templates
+
+isobar/
+├── AGENTS.md                    # Root task guide
+├── */AGENTS.md                  # Module-specific tasks
+└── ...                          # Source code
 ```
 
 ## Common Tasks
@@ -111,6 +126,7 @@ After major changes to the codebase:
 /user:context-update    # Update Claude context
 /user:rules-sync       # Sync Cursor rules
 /user:instructions-optimize  # Optimize Copilot
+# Update AGENTS.md files manually when adding modules
 ```
 
 ### Validate AI Guidance
@@ -121,7 +137,7 @@ Use the checklist in `ai_validation_checklist.md` to ensure:
 
 ## Best Practices
 
-1. **Use all three systems** - They complement each other
+1. **Use all four systems** - They complement each other
 2. **Keep context updated** - Run updates quarterly
 3. **Test AI suggestions** - Validate generated code
 4. **Report issues** - Help improve the configuration
@@ -139,6 +155,11 @@ Use the checklist in `ai_validation_checklist.md` to ensure:
 ### Copilot ignoring conventions
 - Check `.github/copilot-instructions.md` exists
 - Restart your IDE
+
+### Codex not finding context
+- Ensure AGENTS.md files exist in relevant directories
+- Check cross-references to CLAUDE.md, Cursor rules
+- Verify repository access in Codex
 
 ## Maintenance Schedule
 
