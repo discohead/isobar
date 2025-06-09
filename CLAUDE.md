@@ -108,3 +108,16 @@ class PPatternName(Pattern):
 - Test pattern output with `.all()` method
 - Verify operator overloading behavior
 - Check edge cases (empty sequences, invalid values)
+
+## Development Dependencies
+Core dependencies: `python-osc`, `mido`, `python-rtmidi`, `LinkPython-extern`, `numpy`
+Test dependencies: `pytest`, `pytest-timeout`, `pytest-runner`
+
+## AI Assistant Integration
+This project includes a comprehensive four-part AI assistant configuration:
+- **Claude Code**: Deep code analysis via `CLAUDE.md` files
+- **Cursor**: Real-time coding guidance (see `.github/copilot-instructions.md`)
+- **GitHub Copilot**: Inline suggestions with domain-specific rules
+- **OpenAI Codex**: Cloud-based task automation via `AGENTS.md` files
+
+See `AI_SETUP.md` for setup instructions and `ai_ecosystem_summary.md` for overview.
