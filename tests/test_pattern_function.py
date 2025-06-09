@@ -24,6 +24,19 @@ def test_punaryfunction_rate_phase():
     assert a.nextn(3) == [0.25, 2.25, 6.25]
 
 
+def test_punaryfunction_callable_mix():
+    f = lambda x: x * x
+    p = iso.PUnaryFunction(
+        f,
+        start=0.0,
+        stop=1.0,
+        steps=3,
+        mul=lambda t: 2.0,
+        offset=lambda t: t,
+    )
+    assert p.nextn(3) == [0.0, 1.0, 3.0]
+
+
 def test_pcallableunaryfunction_constant():
     f = lambda x: x * x
     c = iso.PCallableUnaryFunction(

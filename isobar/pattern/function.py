@@ -20,21 +20,27 @@ class PUnaryFunction(Pattern):
 
     def __init__(self,
                  function: Callable[[float], float],
-                 start: float = 0.0,
-                 stop: float = 1.0,
+                 start: Callable[[float], float] | float | Pattern = 0.0,
+                 stop: Callable[[float], float] | float | Pattern = 1.0,
                  steps: int = 100,
-                 rate: float = 1.0,
-                 phase: float = 0.0,
-                 mul: float = 1.0,
-                 offset: float = 0.0):
+                 rate: Callable[[float], float] | float | Pattern = 1.0,
+                 phase: Callable[[float], float] | float | Pattern = 0.0,
+                 mul: Callable[[float], float] | float | Pattern = 1.0,
+                 offset: Callable[[float], float] | float | Pattern = 0.0):
         self.function = function
         self.start = start
+        self._start_callable = callable(start)
         self.stop = stop
+        self._stop_callable = callable(stop)
         self.steps = steps
         self.rate = rate
+        self._rate_callable = callable(rate)
         self.phase = phase
+        self._phase_callable = callable(phase)
         self.mul = mul
+        self._mul_callable = callable(mul)
         self.offset = offset
+        self._offset_callable = callable(offset)
         self.reset()
 
     def __repr__(self):
@@ -52,24 +58,56 @@ class PUnaryFunction(Pattern):
         steps = Pattern.value(self.steps)
         if self.index >= steps:
             raise StopIteration
-        start = Pattern.value(self.start)
-        stop = Pattern.value(self.stop)
-        fn = self.function
+
+        if steps <= 1:
+            t = 0.0
+        else:
+            t = float(self.index) / float(steps - 1)
+
+        if self._start_callable:
+            start = self.start(t)
+        else:
+            start = Pattern.value(self.start)
+
+        if self._stop_callable:
+            stop = self.stop(t)
+        else:
+            stop = Pattern.value(self.stop)
+
         if steps <= 1:
             x = start
         else:
-            x = start + (stop - start) * float(self.index) / float(steps - 1)
-        rate = Pattern.value(self.rate)
-        phase = Pattern.value(self.phase)
+            x = start + (stop - start) * t
+
+        if self._rate_callable:
+            rate = self.rate(t)
+        else:
+            rate = Pattern.value(self.rate)
+
+        if self._phase_callable:
+            phase = self.phase(t)
+        else:
+            phase = Pattern.value(self.phase)
+
         x = x * rate + phase
+
         self.index += 1
-        value = fn(x)
-        mul = Pattern.value(self.mul)
-        offset = Pattern.value(self.offset)
+        value = self.function(x)
+
+        if self._mul_callable:
+            mul = self.mul(t)
+        else:
+            mul = Pattern.value(self.mul)
+
+        if self._offset_callable:
+            offset = self.offset(t)
+        else:
+            offset = Pattern.value(self.offset)
+
         return value * mul + offset
 
 
-class PCallableUnaryFunction(Pattern):
+class PCallableUnaryFunction(PUnaryFunction):
     """Sample a unary function where parameters are callables.
 
     Args:
@@ -94,46 +132,25 @@ class PCallableUnaryFunction(Pattern):
                  phase: Callable[[float], float] = lambda t: 0.0,
                  mul: Callable[[float], float] = lambda t: 1.0,
                  offset: Callable[[float], float] = lambda t: 0.0):
-        self.function = function
-        self.start = start
-        self.stop = stop
-        self.steps = steps
-        self.rate = rate
-        self.phase = phase
-        self.mul = mul
-        self.offset = offset
-        self.reset()
+        for name, value in {
+            'start': start,
+            'stop': stop,
+            'rate': rate,
+            'phase': phase,
+            'mul': mul,
+            'offset': offset,
+        }.items():
+            if not callable(value):
+                raise TypeError(f"{name} must be callable")
 
-    def __repr__(self):
-        return (
-            f"PCallableUnaryFunction({self.function}, {self.start}, {self.stop}, "
-            f"{self.steps}, rate={self.rate}, phase={self.phase}, "
-            f"mul={self.mul}, offset={self.offset})"
+        super().__init__(
+            function,
+            start=start,
+            stop=stop,
+            steps=steps,
+            rate=rate,
+            phase=phase,
+            mul=mul,
+            offset=offset,
         )
 
-    def reset(self):
-        super().reset()
-        self.index = 0
-
-    def __next__(self):
-        steps = Pattern.value(self.steps)
-        if self.index >= steps:
-            raise StopIteration
-        if steps <= 1:
-            t = 0.0
-        else:
-            t = float(self.index) / float(steps - 1)
-        start = self.start(t)
-        stop = self.stop(t)
-        if steps <= 1:
-            x = start
-        else:
-            x = start + (stop - start) * t
-        rate = self.rate(t)
-        phase = self.phase(t)
-        x = x * rate + phase
-        self.index += 1
-        value = self.function(x)
-        mul = self.mul(t)
-        offset = self.offset(t)
-        return value * mul + offset
