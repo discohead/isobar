@@ -11,6 +11,7 @@ from .chance import *
 from .lsystem import *
 from .markov import *
 from .warp import *
+from .function import *
 from .static import *
 from .tonal import *
 from .fade import *
