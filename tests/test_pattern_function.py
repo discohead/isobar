@@ -66,3 +66,39 @@ def test_pcallableunaryfunction_dynamic():
     )
     assert d.nextn(3) == [0.0, 1.0, 3.0]
 
+def test_punaryfunction_edge_case_single_step():
+    f = lambda x: x * x
+    # Test with steps=1, should return the function evaluated at start
+    a = iso.PUnaryFunction(f, start=0.5, stop=1.0, steps=1)
+    assert a.nextn(1) == [0.25]  # 0.5 * 0.5
+    with pytest.raises(StopIteration):
+        next(a)
+
+    # Test with steps=0, should raise StopIteration immediately
+    b = iso.PUnaryFunction(f, start=0.5, stop=1.0, steps=0)
+    with pytest.raises(StopIteration):
+        next(b)
+
+def test_pcallableunaryfunction_edge_case_single_step():
+    f = lambda x: x * x
+    # Test with steps=1, should return the function evaluated at start
+    a = iso.PCallableUnaryFunction(
+        f,
+        start=lambda t: 0.5,
+        stop=lambda t: 1.0,
+        steps=1
+    )
+    assert a.nextn(1) == [0.25]  # 0.5 * 0.5
+    with pytest.raises(StopIteration):
+        next(a)
+
+    # Test with steps=0, should raise StopIteration immediately
+    b = iso.PCallableUnaryFunction(
+        f,
+        start=lambda t: 0.5,
+        stop=lambda t: 1.0,
+        steps=0
+    )
+    with pytest.raises(StopIteration):
+        next(b)
+
